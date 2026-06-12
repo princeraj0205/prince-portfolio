@@ -1,234 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<div id="home" class="page active">
 
-<title>PRINCE RAJ | HACKER PORTFOLIO</title>
+<div class="terminal">
 
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<h1 class="glitch">
+PRINCE RAJ
+</h1>
+
+<p id="typing"></p>
+
+<div class="info">
+
+<p>> NAME : PRINCE RAJ</p>
+
+<p>> SCHOOL : ORIENTAL SCHOOL OF LOWER EDUCATION</p>
+
+<p>> CURRENT COLLEGE : GOVERNMENT POLYTECHNIC GAYA</p>
+
+<p>> STATUS : ONLINE</p>
+
+<p>> DOMAIN : WEB DEVELOPMENT</p>
+
+<p>> GOAL : FULL STACK DEVELOPER</p>
+
+<p>> SYSTEM ACCESS : GRANTED</p>
+
+<p>> SECURITY LEVEL : HIGH</p>
+
+</div>
+
+</div>
+
+</div>
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Share Tech Mono',monospace;
-}
+.glitch{
 
-body{
-background:#000;
+font-size:70px;
+
 color:#00ff00;
-overflow:hidden;
+
+position:relative;
+
+text-shadow:
+0 0 10px #00ff00,
+0 0 30px #00ff00,
+0 0 50px #00ff00;
+
+animation:glitch 2s infinite;
+
 }
 
-canvas{
-position:fixed;
-top:0;
-left:0;
-z-index:-1;
+@keyframes glitch{
+
+0%{
+transform:translate(0);
 }
 
-.nav{
-position:fixed;
-top:20px;
-width:100%;
-text-align:center;
+20%{
+transform:translate(-2px,2px);
 }
 
-.nav button{
-padding:12px 25px;
-margin:5px;
-background:#000;
+40%{
+transform:translate(2px,-2px);
+}
+
+60%{
+transform:translate(-2px,-2px);
+}
+
+80%{
+transform:translate(2px,2px);
+}
+
+100%{
+transform:translate(0);
+}
+
+}
+
+.info{
+
+margin-top:30px;
+
+font-size:20px;
+
+line-height:2;
+
 border:2px solid #00ff00;
-color:#00ff00;
-cursor:pointer;
+
+padding:20px;
+
+box-shadow:0 0 20px #00ff00;
+
 }
 
-.nav button:hover{
-background:#00ff00;
-color:#000;
-}
+.terminal{
 
-.page{
-display:none;
-padding:120px 50px;
-height:100vh;
-overflow:auto;
-}
+width:90%;
 
-.active{
-display:block;
-}
+max-width:900px;
 
-#loader{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000;
-display:none;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-z-index:9999;
-}
+margin:auto;
 
-.bar{
-width:400px;
-height:20px;
-border:2px solid #00ff00;
-margin-top:20px;
-}
+padding-top:120px;
 
-.progress{
-height:100%;
-width:0%;
-background:#00ff00;
-}
-
-input,textarea{
-width:100%;
-padding:10px;
-margin:10px 0;
-background:#000;
-border:2px solid #00ff00;
-color:#00ff00;
 }
 
 </style>
-</head>
-<body>
-
-<audio id="hackSound">
-<source src="hacker.mp3" type="audio/mpeg">
-</audio>
-
-<canvas id="matrix"></canvas>
-
-<div class="nav">
-<button onclick="openPage('home')">HOME</button>
-<button onclick="openPage('about')">ABOUT</button>
-<button onclick="openPage('gallery')">GALLERY</button>
-<button onclick="openPage('contact')">CONTACT</button>
-</div>
-
-<div id="loader">
-<h1>ACCESSING DATABASE...</h1>
-<div class="bar">
-<div class="progress" id="progress"></div>
-</div>
-</div>
-
-<div id="home" class="page active">
-<h1>> WELCOME PRINCE RAJ</h1>
-<p>System Online...</p>
-</div>
-
-<div id="about" class="page">
-<h1>> ABOUT</h1>
-<p>Add your bio here.</p>
-</div>
-
-<div id="gallery" class="page">
-<h1>> GALLERY</h1>
-<p>Add photos and videos here.</p>
-</div>
-
-<div id="contact" class="page">
-<h1>> CONTACT TERMINAL</h1>
-
-<form>
-<input type="text" placeholder="ENTER NAME">
-<input type="email" placeholder="ENTER EMAIL">
-<textarea placeholder="MESSAGE"></textarea>
-<button type="submit">SEND</button>
-</form>
-
-</div>
 
 <script>
 
-// Matrix Rain
-const canvas=document.getElementById("matrix");
-const ctx=canvas.getContext("2d");
+const txt=
+"> INITIALIZING USER PROFILE... ACCESS GRANTED";
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+let i=0;
 
-const chars="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-const drops=[];
+function type(){
 
-for(let i=0;i<300;i++) drops[i]=1;
+if(i<txt.length){
 
-function draw(){
+document.getElementById("typing")
+.innerHTML += txt.charAt(i);
 
-ctx.fillStyle="rgba(0,0,0,0.05)";
-ctx.fillRect(0,0,canvas.width,canvas.height);
+i++;
 
-ctx.fillStyle="#00ff00";
-
-for(let i=0;i<drops.length;i++){
-
-const text=chars[Math.floor(Math.random()*chars.length)];
-
-ctx.fillText(text,i*15,drops[i]*15);
-
-if(drops[i]*15>canvas.height)
-drops[i]=0;
-
-drops[i]++;
+setTimeout(type,60);
 
 }
 
 }
 
-setInterval(draw,35);
-
-// Page Loader
-function openPage(id){
-
-document.getElementById("loader").style.display="flex";
-
-const audio=document.getElementById("hackSound");
-audio.currentTime=0;
-audio.play().catch(()=>{});
-
-let p=0;
-
-const progress=document.getElementById("progress");
-
-const run=setInterval(()=>{
-
-p+=2;
-
-progress.style.width=p+"%";
-
-if(p>=100){
-
-clearInterval(run);
-
-document.getElementById("loader").style.display="none";
-
-document
-.querySelectorAll(".page")
-.forEach(x=>x.classList.remove("active"));
-
-document
-.getElementById(id)
-.classList.add("active");
-
-progress.style.width="0%";
-
-}
-
-},40);
-
-}
+type();
 
 </script>
-
-</body>
-</html>
