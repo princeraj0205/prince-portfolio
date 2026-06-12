@@ -1167,14 +1167,19 @@
           </div>
         </div>
       </div>
-      <div class="contact-form">
-        <h3>📩 MESSAGE BHEJO</h3>
-        <input type="text" class="form-input" placeholder="Aapka Naam">
-        <input type="email" class="form-input" placeholder="Email Address">
-        <input type="text" class="form-input" placeholder="Subject / Vishay">
-        <textarea class="form-input" placeholder="Apna message yahan likhein..."></textarea>
-        <button class="form-btn" onclick="submitForm()">🚀 BHEJO</button>
-      </div>
+   <form action="https://formspree.io/f/mlgkpywl" method="POST" class="contact-form">
+  <h3>📩 MESSAGE BHEJO</h3>
+
+  <input type="text" name="name" class="form-input" placeholder="Aapka Naam" required>
+
+  <input type="email" name="email" class="form-input" placeholder="Email Address" required>
+
+  <input type="text" name="subject" class="form-input" placeholder="Subject / Vishay">
+
+  <textarea name="message" class="form-input" placeholder="Apna message yahan likhein..." required></textarea>
+
+  <button type="submit" class="form-btn">🚀 BHEJO</button>
+</form>   
     </div>
   </div>
 </section>
