@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prince Raj</title>
+<style>
+  :root{
+    --bg: #0a0e17;
+    --surface: #121826;
+    --surface2: #1a2230;
+    --green: #39ff88;
+    --cyan: #00d9ff;
+    --pink: #ff2e9a;
+    --text: #e8eef5;
+    --muted: #8b9bb4;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: 'Inter', -apple-system, sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  body::before{
+    content:'';
+    position:fixed; inset:0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(57,255,136,0.06), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(0,217,255,0.06), transparent 40%);
+    pointer-events:none;
+    z-index:0;
+  }
+  .container{max-width:880px; margin:0 auto; padding:0 24px;}
+
+  /* NAV */
+  nav{
+    position: sticky; top:0; z-index:50;
+    background: rgba(10,14,23,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(57,255,136,0.15);
+  }
+  nav .container{
+    display:flex; justify-content:space-between; align-items:center;
+    height:64px; font-family: var(--mono);
+  }
+  nav .logo{ color: var(--green); font-weight:700; font-size:18px; letter-spacing:1px;}
+  nav .logo span{color: var(--cyan);}
+  nav ul{display:flex; gap:24px; list-style:none;}
+  nav a{color: var(--muted); text-decoration:none; font-size:13px; transition: color .2s;}
+  nav a:hover{color: var(--green);}
+
+  /* HERO / TERMINAL */
+  .hero{
+    min-height: 86vh; display:flex; flex-direction:column; justify-content:center;
+    position:relative; z-index:1;
+  }
+  .terminal{
+    background: var(--surface);
+    border: 1px solid rgba(57,255,136,0.25);
+    border-radius: 10px;
+    box-shadow: 0 0 40px rgba(57,255,136,0.08), 0 20px 60px rgba(0,0,0,0.5);
+    overflow:hidden;
+    max-width: 640px;
+  }
+  .terminal-bar{
+    background: var(--surface2);
+    padding: 10px 14px;
+    display:flex; align-items:center; gap:8px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .dot.r{background:#ff5f57;} .dot.y{background:#febc2e;} .dot.g{background:#28c840;}
+  .terminal-title{
+    margin-left:10px; color: var(--muted); font-family: var(--mono); font-size:12px;
+  }
+  .terminal-body{
+    padding: 24px; font-family: var(--mono); font-size: 14px; min-height: 180px;
+  }
+  .terminal-body .line{ margin-bottom: 10px; color: var(--muted);}
+  .terminal-body .prompt{ color: var(--green);}
+  .terminal-body .path{ color: var(--cyan);}
+  .typed{ color: var(--text); white-space: pre-wrap;}
+  .cursor{
+    display:inline-block; width:8px; height:16px; background: var(--green);
+    animation: blink 1s step-end infinite; vertical-align: text-bottom; margin-left:2px;
+  }
+  @keyframes blink{50%{opacity:0;}}
+  .hero h1{
+    font-family: var(--mono); font-size: clamp(28px, 6vw, 48px);
+    margin-top: 28px; font-weight:700; letter-spacing: -1px;
+  }
+  .hero h1 .accent{color: var(--green);}
+  .hero p.tag{ color: var(--muted); margin-top: 10px; font-size: 16px; max-width: 520px;}
+
+  /* SECTIONS */
+  section{ padding: 70px 0; position:relative; z-index:1; }
+  .section-label{
+    font-family: var(--mono); color: var(--green); font-size: 13px;
+    letter-spacing: 3px; text-transform: uppercase; margin-bottom: 8px;
+  }
+  h2{ font-size: clamp(22px, 4vw, 32px); margin-bottom: 24px; }
+
+  /* ABOUT */
+  .about-grid{ display:grid; grid-template-columns: 1fr; gap:20px; }
+  .about-text p{ color: var(--muted); margin-bottom: 14px; font-size:15px; }
+
+  /* SKILLS */
+  .skills{ display:flex; flex-wrap:wrap; gap:10px; }
+  .skill{
+    font-family: var(--mono); font-size: 13px; padding: 8px 14px;
+    border: 1px solid rgba(0,217,255,0.3); border-radius: 6px;
+    color: var(--cyan); background: rgba(0,217,255,0.05);
+  }
+
+  /* PROJECTS */
+  .projects{ display:grid; gap:18px; }
+  .project{
+    background: var(--surface);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 10px; padding: 22px;
+    transition: border-color .2s, transform .2s;
+  }
+  .project:hover{ border-color: rgba(57,255,136,0.35); transform: translateY(-2px); }
+  .project h3{ font-family: var(--mono); font-size: 17px; color: var(--text); margin-bottom:8px;}
+  .project h3 .pill{
+    font-size:11px; color: var(--pink); border:1px solid rgba(255,46,154,0.35);
+    padding:2px 8px; border-radius:20px; margin-left:8px; vertical-align:middle;
+  }
+  .project p{ color: var(--muted); font-size: 14px; margin-bottom:10px;}
+  .project .stack{ font-family: var(--mono); font-size:12px; color: var(--green); }
+
+  /* GALLERY */
+  .gallery-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(160px,1fr));
+    gap: 10px;
+  }
+  .gallery-item{
+    aspect-ratio: 1/1; border-radius: 8px; overflow:hidden;
+    border: 1px solid rgba(255,255,255,0.06); position:relative;
+    background: var(--surface);
+  }
+  .gallery-item img, .gallery-item iframe{
+    width:100%; height:100%; object-fit:cover; border:0; display:block;
+  }
+  .gallery-item.video::after{
+    content:'▶'; position:absolute; top:8px; right:8px;
+    color: var(--green); font-size:14px; background: rgba(10,14,23,0.7);
+    width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  }
+  .gallery-empty{
+    color: var(--muted); font-family: var(--mono); font-size: 13px;
+    border: 1px dashed rgba(255,255,255,0.15); border-radius:8px;
+    padding: 30px; text-align:center;
+  }
+
+  /* SOCIAL / FOOTER */
+  .social-links{ display:flex; gap:14px; flex-wrap:wrap; }
+  .social-links a{
+    font-family: var(--mono); font-size: 14px; color: var(--text);
+    border: 1px solid rgba(255,255,255,0.1); padding: 10px 18px;
+    border-radius: 6px; text-decoration:none; transition: all .2s;
+  }
+  .social-links a:hover{ border-color: var(--green); color: var(--green); }
+
+  footer{
+    text-align:center; padding: 40px 0; color: var(--muted);
+    font-family: var(--mono); font-size: 12px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  footer .accent{color: var(--green);}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <div class="logo">prince<span>@raj</span></div>
+    <ul>
+      <li><a href="#about">about</a></li>
+      <li><a href="#skills">skills</a></li>
+      <li><a href="#projects">projects</a></li>
+      <li><a href="#gallery">gallery</a></li>
+      <li><a href="#contact">contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero container">
+  <div class="terminal">
+    <div class="terminal-bar">
+      <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+      <span class="terminal-title">prince@raj: ~</span>
+    </div>
+    <div class="terminal-body">
+      <div class="line"><span class="prompt">prince@raj</span><span class="path">:~$</span> whoami</div>
+      <div class="line typed" id="typedText"></div>
+    </div>
+  </div>
+  <h1>Hi, I'm <span class="accent">Prince Raj</span></h1>
+  <p class="tag">Diploma CSE student | Building AI tools, Telegram bots & web apps | प्रिंस राज</p>
+</header>
+
+<section id="about">
+  <div class="container">
+    <div class="section-label">// about</div>
+    <h2>About Me</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I'm Prince Raj, a Computer Science Engineering diploma student at Government Polytechnic Gaya (Nalanda, Bihar), currently in Semester III. Alongside my coursework, I love building practical AI-powered projects from scratch.</p>
+        <p>My focus is on combining AI/LLM APIs with real-world tools — Telegram bots, web chatbots, and automation scripts that solve everyday problems. I enjoy learning by building, and sharing what I create.</p>
+        <p>This page is where I document my journey — projects, skills, and a bit of my life along the way.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="container">
+    <div class="section-label">// skills</div>
+    <h2>Tech I Work With</h2>
+    <div class="skills">
+      <span class="skill">Python</span>
+      <span class="skill">Flask</span>
+      <span class="skill">SQLite</span>
+      <span class="skill">Groq API / LLaMA</span>
+      <span class="skill">OpenRouter</span>
+      <span class="skill">PyMuPDF</span>
+      <span class="skill">Pytesseract / OCR</span>
+      <span class="skill">HTML / CSS / JS</span>
+      <span class="skill">Telegram Bot API</span>
+      <span class="skill">ReportLab (PDF Gen)</span>
+      <span class="skill">Prompt Engineering</span>
+      <span class="skill">Git / GitHub</span>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container">
+    <div class="section-label">// projects</div>
+    <h2>What I've Built</h2>
+    <div class="projects">
+
+      <div class="project">
+        <h3>PRINCE AI <span class="pill">Telegram Bot</span></h3>
+        <p>A multi-personality AI assistant for Telegram with conversation memory, notes & todo management, weather lookup, translation, and quiz generation — powered by Groq's LLaMA models.</p>
+        <div class="stack">Python · Groq API · SQLite · PyMuPDF</div>
+      </div>
+
+      <div class="project">
+        <h3>Prince AI <span class="pill">Web Chatbot</span></h3>
+        <p>A Flask-based AI chatbot web app with a 3D neon-themed interface, powered by OpenRouter's Mistral model — built and designed end-to-end.</p>
+        <div class="stack">Flask · OpenRouter · HTML/CSS/JS</div>
+      </div>
+
+      <div class="project">
+        <h3>Python for SBTE Diploma <span class="pill">PDF Book</span></h3>
+        <p>A complete Python programming textbook covering the full SBTE Diploma CSE syllabus, written with Hinglish explanations and formatted as a professional book.</p>
+        <div class="stack">Python · ReportLab</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="gallery">
+  <div class="container">
+    <div class="section-label">// gallery</div>
+    <h2>Life in Frames</h2>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="section-label">// connect</div>
+    <h2>Let's Connect</h2>
+    <div class="social-links">
+      <a href="https://instagram.com/yourhandle" target="_blank">📸 Instagram</a>
+      <a href="https://github.com/yourhandle" target="_blank">💻 GitHub</a>
+      <a href="https://t.me/yourbot" target="_blank">🤖 Telegram</a>
+      <a href="mailto:you@example.com">✉️ Email</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    Made with <span class="accent">♥</span> by Prince Raj — प्रिंस राज
+  </div>
+</footer>
+
+<script>
+  // Hero typing animation
+  const text = "A Diploma CSE student who codes, builds AI tools, and shares the journey.";
+  const el = document.getElementById('typedText');
+  let i = 0;
+  function type(){
+    if(i < text.length){
+      el.innerHTML = text.slice(0, i+1) + '<span class="cursor"></span>';
+      i++;
+      setTimeout(type, 35);
+    } else {
+      el.innerHTML = text + '<span class="cursor"></span>';
+    }
+  }
+  type();
+
+  // ---- GALLERY ----
+  // Add your photos and videos here.
+  // type: "image"  -> src is an image URL
+  // type: "video"  -> src is a YouTube EMBED URL (e.g. https://www.youtube.com/embed/VIDEO_ID)
+  const galleryItems = [
+    // { type: "image", src: "photo1.jpg" },
+    // { type: "video", src: "https://www.youtube.com/embed/VIDEO_ID" },
+  ];
+
+  const grid = document.getElementById('galleryGrid');
+  if(galleryItems.length === 0){
+    grid.innerHTML = '<div class="gallery-empty">No photos/videos added yet.<br>Edit the "galleryItems" array in index.html to add your memories here.</div>';
+  } else {
+    galleryItems.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'gallery-item' + (item.type === 'video' ? ' video' : '');
+      if(item.type === 'image'){
+        div.innerHTML = `<img src="${item.src}" alt="memory">`;
+      } else {
+        div.innerHTML = `<iframe src="${item.src}" allowfullscreen></iframe>`;
+      }
+      grid.appendChild(div);
+    });
+  }
+</script>
+
+</body>
+</html>
