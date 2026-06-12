@@ -1,263 +1,1649 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Prince Raj Virtual Chemistry Lab</title>
-
+<title>Prince Raj Chemistry Lab 🧪</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&family=Exo+2:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --acid-green: #00ff88;
+    --electric-blue: #00c8ff;
+    --plasma-purple: #a855f7;
+    --fire-orange: #ff6b00;
+    --danger-red: #ff2244;
+    --dark-bg: #050a0f;
+    --card-bg: #0d1b2a;
+    --card2-bg: #0a1628;
+    --text-main: #e0f7ff;
+    --text-sub: #8ab4c8;
+    --glass-border: rgba(0,200,255,0.2);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--dark-bg);
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+  }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+  /* ===== SCROLLBAR ===== */
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0d1b2a; }
+  ::-webkit-scrollbar-thumb { background: var(--acid-green); border-radius: 4px; }
 
-body{
-background:linear-gradient(180deg,#081120,#0f172a);
-min-height:100vh;
-color:white;
-overflow-x:hidden;
-}
+  /* ===== NAV ===== */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(5,10,15,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-logo {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--acid-green), var(--electric-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--text-sub);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 1px;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--acid-green); }
 
-header{
-text-align:center;
-padding:30px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(10px);
-}
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 80px 2rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 40%, rgba(0,200,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 60%, rgba(0,255,136,0.06) 0%, transparent 60%),
+                radial-gradient(ellipse at 50% 90%, rgba(168,85,247,0.07) 0%, transparent 50%);
+    z-index: 0;
+  }
+  .floating-atoms {
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  }
+  .atom {
+    position: absolute;
+    border-radius: 50%;
+    animation: floatAtom linear infinite;
+    opacity: 0.15;
+  }
+  @keyframes floatAtom {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.1; }
+    50% { opacity: 0.25; }
+    100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+  }
+  .hero-content { position: relative; z-index: 1; }
+  .hero-badge {
+    display: inline-block;
+    padding: 6px 20px;
+    border: 1px solid var(--acid-green);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--acid-green);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: pulseBadge 2s ease-in-out infinite;
+  }
+  @keyframes pulseBadge {
+    0%,100% { box-shadow: 0 0 8px var(--acid-green); }
+    50% { box-shadow: 0 0 20px var(--acid-green), 0 0 40px rgba(0,255,136,0.3); }
+  }
+  .hero h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    font-weight: 900;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+  .hero h1 .line1 {
+    background: linear-gradient(135deg, #fff 0%, var(--electric-blue) 50%, var(--acid-green) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero h1 .line2 {
+    background: linear-gradient(135deg, var(--acid-green) 0%, var(--plasma-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: block;
+    font-size: 0.55em;
+    letter-spacing: 6px;
+    margin-top: 0.3rem;
+  }
+  .hero-sub {
+    font-size: 1.2rem;
+    color: var(--text-sub);
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+  .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    padding: 14px 36px;
+    background: linear-gradient(135deg, var(--acid-green), var(--electric-blue));
+    color: #050a0f;
+    border: none; border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(0,255,136,0.4); }
+  .btn-ghost {
+    padding: 14px 36px;
+    background: transparent;
+    color: var(--electric-blue);
+    border: 1px solid var(--electric-blue);
+    border-radius: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-ghost:hover { background: rgba(0,200,255,0.1); transform: translateY(-3px); }
+  .scroll-indicator {
+    position: absolute; bottom: 30px; left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s ease-in-out infinite;
+    color: var(--text-sub); font-size: 1.5rem;
+  }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
 
-header h1{
-font-size:40px;
-color:#00ffff;
-}
+  /* ===== SECTIONS ===== */
+  section { padding: 80px 2rem; }
+  .section-title {
+    text-align: center;
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.8rem);
+    font-weight: 900;
+    margin-bottom: 0.6rem;
+  }
+  .section-sub {
+    text-align: center;
+    color: var(--text-sub);
+    font-size: 1.05rem;
+    margin-bottom: 3.5rem;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
 
-header p{
-margin-top:10px;
-}
+  /* ===== EQUIPMENT CARDS ===== */
+  #equipment { background: linear-gradient(180deg, var(--dark-bg) 0%, #0a1628 100%); }
+  .equip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  .equip-card {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.8rem 1.2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s;
+    cursor: pointer;
+  }
+  .equip-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--acid-green);
+    box-shadow: 0 12px 40px rgba(0,255,136,0.15);
+  }
+  .equip-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--acid-green), var(--electric-blue));
+  }
+  .equip-icon { font-size: 3.5rem; margin-bottom: 0.8rem; display: block; }
+  .equip-label {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--electric-blue);
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+  .equip-name {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.4rem;
+  }
+  .equip-desc { font-size: 0.85rem; color: var(--text-sub); line-height: 1.5; }
+  .prince-watermark {
+    position: absolute; bottom: 8px; right: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 900;
+    color: rgba(0,255,136,0.3);
+    letter-spacing: 1px;
+  }
 
-.lab{
-height:80vh;
-display:flex;
-justify-content:center;
-align-items:flex-end;
-gap:80px;
-position:relative;
-}
+  /* ===== VIRTUAL REACTION LAB ===== */
+  #reactions { background: var(--dark-bg); }
+  .lab-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+  @media(max-width:768px){ .lab-wrapper { grid-template-columns: 1fr; } }
+  .reaction-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+  }
+  .panel-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--acid-green);
+    margin-bottom: 1.2rem;
+    letter-spacing: 2px;
+  }
+  .chem-select {
+    width: 100%; padding: 12px;
+    background: #0a1628;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .chem-select:focus { border-color: var(--acid-green); }
+  .react-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--fire-orange), var(--danger-red));
+    border: none; border-radius: 8px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 2px;
+    transition: all 0.3s;
+  }
+  .react-btn:hover { transform: scale(1.03); box-shadow: 0 6px 25px rgba(255,107,0,0.4); }
+  .beaker-visual {
+    height: 180px;
+    background: rgba(0,200,255,0.03);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    margin: 1.2rem 0;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    font-size: 3rem;
+    transition: all 0.5s;
+  }
+  .beaker-watermark {
+    position: absolute; bottom: 6px; right: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    color: rgba(0,255,136,0.25);
+    letter-spacing: 1px;
+  }
+  .reaction-result {
+    background: #071220;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-sub);
+    min-height: 80px;
+  }
+  .reaction-result .formula {
+    color: var(--acid-green);
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .reaction-result .result-name { color: var(--electric-blue); font-weight: 700; }
+  .result-type-acid { color: #ff2244; }
+  .result-type-base { color: #00c8ff; }
+  .result-type-neut { color: #00ff88; }
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(0,255,136,0.3);
+    animation: bubbleUp 1.5s ease-in forwards;
+    pointer-events: none;
+  }
+  @keyframes bubbleUp {
+    0% { transform: translateY(0) scale(1); opacity: 0.8; }
+    100% { transform: translateY(-200px) scale(0); opacity: 0; }
+  }
+  .glow-beaker { box-shadow: 0 0 30px rgba(0,255,136,0.3) inset; border-color: var(--acid-green); }
 
-/* TABLE */
+  /* ===== PERIODIC TABLE SECTION ===== */
+  #periodic { background: linear-gradient(180deg, #0a1628 0%, var(--dark-bg) 100%); }
+  .element-search-box {
+    display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; justify-content: center;
+  }
+  .elem-input {
+    flex: 1; min-width: 200px; max-width: 400px;
+    padding: 14px 18px;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .elem-input:focus { border-color: var(--electric-blue); }
+  .elem-search-btn {
+    padding: 14px 30px;
+    background: linear-gradient(135deg, var(--electric-blue), var(--plasma-purple));
+    border: none; border-radius: 8px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .elem-search-btn:hover { transform: scale(1.05); }
+  .element-display {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+    align-items: center;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  @media(max-width:600px){ .element-display { grid-template-columns: 1fr; text-align: center; } }
+  .element-tile {
+    background: linear-gradient(135deg, var(--plasma-purple), var(--electric-blue));
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .element-tile .at-num {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.7);
+  }
+  .element-tile .sym {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin: 0.2rem 0;
+  }
+  .element-tile .ename {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+  }
+  .element-tile .ewt {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    margin-top: 0.2rem;
+  }
+  .element-tile .tile-watermark {
+    position: absolute; top: 6px; right: 8px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.45rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 1px;
+  }
+  .elem-info h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.3rem;
+    color: var(--electric-blue);
+    margin-bottom: 1rem;
+  }
+  .elem-info table { width: 100%; border-collapse: collapse; }
+  .elem-info td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 0.95rem;
+  }
+  .elem-info td:first-child { color: var(--text-sub); width: 45%; }
+  .elem-info td:last-child { color: #fff; font-weight: 600; }
 
-.table{
-position:absolute;
-bottom:0;
-width:100%;
-height:120px;
-background:#4b2e16;
-box-shadow:0 -10px 20px rgba(0,0,0,.5);
-}
+  /* ===== QUICK REACTIONS CATALOG ===== */
+  #catalog { background: var(--dark-bg); }
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .catalog-card {
+    background: var(--card2-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+  .catalog-card:hover {
+    border-color: var(--plasma-purple);
+    box-shadow: 0 8px 30px rgba(168,85,247,0.15);
+    transform: translateY(-4px);
+  }
+  .catalog-card::after {
+    content: 'PRINCE RAJ';
+    position: absolute; bottom: 8px; right: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.5rem;
+    color: rgba(168,85,247,0.25);
+    letter-spacing: 2px;
+  }
+  .cat-type {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: 0.8rem;
+  }
+  .cat-type.acid { background: rgba(255,34,68,0.15); color: var(--danger-red); border: 1px solid rgba(255,34,68,0.3); }
+  .cat-type.combo { background: rgba(0,200,255,0.1); color: var(--electric-blue); border: 1px solid rgba(0,200,255,0.3); }
+  .cat-type.redox { background: rgba(168,85,247,0.1); color: var(--plasma-purple); border: 1px solid rgba(168,85,247,0.3); }
+  .cat-type.organic { background: rgba(255,107,0,0.1); color: var(--fire-orange); border: 1px solid rgba(255,107,0,0.3); }
+  .cat-type.neut { background: rgba(0,255,136,0.1); color: var(--acid-green); border: 1px solid rgba(0,255,136,0.3); }
+  .catalog-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+  .cat-formula {
+    background: rgba(0,200,255,0.05);
+    border: 1px solid rgba(0,200,255,0.1);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 0.95rem;
+    color: var(--acid-green);
+    margin: 0.7rem 0;
+    letter-spacing: 0.5px;
+  }
+  .cat-desc { font-size: 0.88rem; color: var(--text-sub); line-height: 1.6; }
 
-/* BEAKER */
+  /* ===== SAFETY RULES ===== */
+  #safety { background: linear-gradient(180deg, #0a1628 0%, var(--dark-bg) 100%); }
+  .safety-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  .safety-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,34,68,0.2);
+    border-radius: 16px;
+    padding: 1.5rem;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .safety-card:hover { border-color: var(--danger-red); transform: scale(1.02); }
+  .safety-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fire-orange), var(--danger-red));
+  }
+  .safety-icon { font-size: 2.5rem; margin-bottom: 0.8rem; }
+  .safety-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    color: var(--danger-red);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+  .safety-card p { font-size: 0.9rem; color: var(--text-sub); line-height: 1.6; }
+  .safety-watermark {
+    position: absolute; bottom: 8px; right: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.5rem;
+    color: rgba(255,34,68,0.2);
+    letter-spacing: 1px;
+  }
 
-.beaker{
-width:180px;
-height:260px;
-border:5px solid rgba(255,255,255,.7);
-border-top:none;
-border-radius:0 0 25px 25px;
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(10px);
-position:relative;
-overflow:hidden;
-}
+  /* ===== QUIZ SECTION ===== */
+  #quiz { background: var(--dark-bg); }
+  .quiz-box {
+    max-width: 700px;
+    margin: 0 auto;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2.5rem;
+    position: relative;
+  }
+  .quiz-box::after {
+    content: 'PRINCE RAJ';
+    position: absolute; bottom: 12px; right: 16px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.55rem;
+    color: rgba(0,255,136,0.2);
+    letter-spacing: 2px;
+  }
+  .quiz-q {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+  .quiz-progress {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    margin-bottom: 1rem;
+    letter-spacing: 1px;
+  }
+  .quiz-options { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+  @media(max-width:500px){ .quiz-options { grid-template-columns: 1fr; } }
+  .quiz-opt {
+    padding: 14px;
+    background: #071220;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    color: var(--text-main);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: left;
+  }
+  .quiz-opt:hover { border-color: var(--electric-blue); background: rgba(0,200,255,0.05); }
+  .quiz-opt.correct { border-color: var(--acid-green); background: rgba(0,255,136,0.1); color: var(--acid-green); }
+  .quiz-opt.wrong { border-color: var(--danger-red); background: rgba(255,34,68,0.1); color: var(--danger-red); }
+  .quiz-feedback {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: none;
+    margin-bottom: 1rem;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.correct-f { background: rgba(0,255,136,0.1); color: var(--acid-green); border: 1px solid rgba(0,255,136,0.3); }
+  .quiz-feedback.wrong-f { background: rgba(255,34,68,0.1); color: var(--danger-red); border: 1px solid rgba(255,34,68,0.3); }
+  .quiz-score {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--plasma-purple);
+    margin-bottom: 1rem;
+  }
+  .next-btn {
+    padding: 12px 28px;
+    background: linear-gradient(135deg, var(--plasma-purple), var(--electric-blue));
+    border: none; border-radius: 8px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: none;
+    transition: all 0.3s;
+  }
+  .next-btn.show { display: inline-block; }
+  .next-btn:hover { transform: scale(1.05); }
 
-.beaker::before{
-content:'';
-position:absolute;
-left:15px;
-top:10px;
-width:20px;
-height:220px;
-background:rgba(255,255,255,.25);
-border-radius:20px;
-}
+  /* ===== PH CALCULATOR ===== */
+  #phcalc { background: linear-gradient(180deg, #0a1628 0%, var(--dark-bg) 100%); }
+  .ph-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  @media(max-width:700px){ .ph-grid { grid-template-columns: 1fr; } }
+  .ph-panel {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem;
+  }
+  .ph-panel h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--electric-blue);
+    margin-bottom: 1.2rem;
+    letter-spacing: 2px;
+  }
+  .ph-input {
+    width: 100%;
+    padding: 12px 16px;
+    background: #071220;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+  }
+  .ph-input:focus { border-color: var(--acid-green); }
+  .ph-calc-btn {
+    width: 100%; padding: 13px;
+    background: linear-gradient(135deg, var(--acid-green), #00a8ff);
+    border: none; border-radius: 8px;
+    color: #050a0f;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-bottom: 1.2rem;
+  }
+  .ph-calc-btn:hover { transform: scale(1.03); }
+  .ph-result-box {
+    background: #071220;
+    border-radius: 10px;
+    padding: 1.2rem;
+    text-align: center;
+    border: 1px solid var(--glass-border);
+    min-height: 80px;
+  }
+  .ph-value {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.3rem;
+  }
+  .ph-label { font-size: 0.9rem; color: var(--text-sub); }
+  .ph-bar-section { margin-top: 1.5rem; }
+  .ph-bar-label {
+    font-size: 0.85rem;
+    color: var(--text-sub);
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+  .ph-bar-track {
+    height: 18px;
+    border-radius: 9px;
+    background: linear-gradient(90deg, var(--danger-red) 0%, #ff6b00 14%, #ffdd00 28%, #aaff00 42%, var(--acid-green) 50%, #00ddcc 64%, var(--electric-blue) 78%, var(--plasma-purple) 100%);
+    position: relative;
+    overflow: visible;
+  }
+  .ph-needle {
+    position: absolute; top: -8px;
+    width: 4px; height: 34px;
+    background: #fff;
+    border-radius: 2px;
+    transition: left 0.5s ease;
+    box-shadow: 0 0 8px rgba(255,255,255,0.7);
+    transform: translateX(-2px);
+  }
 
-.liquid{
-position:absolute;
-bottom:0;
-width:100%;
-height:55%;
-background:rgba(0,255,255,.6);
-animation:wave 3s infinite;
-}
+  /* ===== MOLAR MASS ===== */
+  .mol-input-row { display: flex; gap: 0.8rem; }
+  .mol-input {
+    flex: 1;
+    padding: 12px 16px;
+    background: #071220;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Exo 2', sans-serif;
+    font-size: 1rem;
+    outline: none;
+  }
+  .mol-input:focus { border-color: var(--plasma-purple); }
+  .mol-btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--plasma-purple), #7000ff);
+    border: none; border-radius: 8px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+  .mol-btn:hover { transform: scale(1.05); }
+  .mol-result {
+    margin-top: 1rem;
+    background: #071220;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 1.2rem;
+    font-size: 0.95rem;
+    color: var(--text-sub);
+    min-height: 80px;
+    line-height: 1.7;
+  }
+  .mol-result .big { font-family: 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--plasma-purple); }
 
-@keyframes wave{
-0%{height:55%;}
-50%{height:58%;}
-100%{height:55%;}
-}
+  /* ===== CONTACT ===== */
+  #contact {
+    background: linear-gradient(135deg, #050a0f 0%, #0a1628 50%, #050a0f 100%);
+    border-top: 1px solid var(--glass-border);
+  }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+  @media(max-width:700px){ .contact-grid { grid-template-columns: 1fr; } }
+  .contact-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--acid-green), var(--electric-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .contact-tagline { color: var(--text-sub); font-size: 1rem; margin-bottom: 2rem; line-height: 1.6; }
+  .contact-info { display: flex; flex-direction: column; gap: 1rem; }
+  .contact-item {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    transition: all 0.3s;
+    text-decoration: none;
+    color: inherit;
+  }
+  .contact-item:hover { border-color: var(--acid-green); transform: translateX(6px); }
+  .contact-item-icon { font-size: 1.8rem; }
+  .contact-item-label { font-size: 0.75rem; color: var(--text-sub); letter-spacing: 1px; margin-bottom: 2px; }
+  .contact-item-val { font-size: 1rem; color: #fff; font-weight: 700; }
+  .contact-form {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem;
+  }
+  .contact-form h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    color: var(--acid-green);
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+  }
+  .form-input {
+    width: 100%;
+    padding: 13px 16px;
+    background: #071220;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  .form-input:focus { border-color: var(--electric-blue); }
+  textarea.form-input { height: 100px; resize: vertical; }
+  .form-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--acid-green), var(--electric-blue));
+    border: none; border-radius: 8px;
+    color: #050a0f;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .form-btn:hover { transform: scale(1.02); box-shadow: 0 6px 25px rgba(0,255,136,0.3); }
 
-/* FLASK */
+  /* ===== FOOTER ===== */
+  footer {
+    background: #020608;
+    border-top: 1px solid var(--glass-border);
+    text-align: center;
+    padding: 2rem;
+  }
+  .footer-brand {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 900;
+    background: linear-gradient(90deg, var(--acid-green), var(--electric-blue), var(--plasma-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+    letter-spacing: 3px;
+  }
+  footer p { color: var(--text-sub); font-size: 0.85rem; margin-bottom: 0.4rem; }
+  footer .copy { margin-top: 1rem; color: rgba(255,255,255,0.2); font-size: 0.8rem; }
 
-.flask{
-width:200px;
-height:280px;
-position:relative;
-}
+  /* ===== GLOW DIVIDER ===== */
+  .glow-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--acid-green), var(--electric-blue), transparent);
+    margin: 0;
+    opacity: 0.4;
+  }
 
-.flask-shape{
-position:absolute;
-width:100%;
-height:100%;
-border:5px solid rgba(255,255,255,.7);
-background:rgba(255,255,255,.08);
-backdrop-filter:blur(10px);
+  /* ===== STATS BAR ===== */
+  .stats-bar {
+    background: var(--card-bg);
+    border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+  .stat-item { text-align: center; }
+  .stat-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--acid-green), var(--electric-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-lbl { font-size: 0.8rem; color: var(--text-sub); letter-spacing: 2px; margin-top: 2px; }
 
-clip-path:polygon(
-40% 0%,
-60% 0%,
-60% 25%,
-95% 100%,
-5% 100%,
-40% 25%
-);
-
-overflow:hidden;
-}
-
-.flask-liquid{
-position:absolute;
-bottom:0;
-width:100%;
-height:50%;
-background:rgba(0,255,100,.5);
-}
-
-.label{
-position:absolute;
-bottom:15px;
-width:100%;
-text-align:center;
-font-weight:bold;
-color:white;
-z-index:5;
-}
-
-/* BUBBLES */
-
-.bubble{
-position:absolute;
-bottom:10px;
-width:12px;
-height:12px;
-background:white;
-border-radius:50%;
-opacity:.8;
-animation:rise 4s infinite;
-}
-
-.b1{left:30px;}
-.b2{left:70px;animation-delay:1s;}
-.b3{left:120px;animation-delay:2s;}
-
-@keyframes rise{
-0%{
-transform:translateY(0);
-opacity:1;
-}
-100%{
-transform:translateY(-200px);
-opacity:0;
-}
-}
-
-/* CHEMICAL LIST */
-
-.chemicals{
-padding:40px;
-text-align:center;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:20px;
-margin-top:20px;
-}
-
-.card{
-background:rgba(255,255,255,.08);
-padding:20px;
-border-radius:15px;
-backdrop-filter:blur(10px);
-}
-
-footer{
-text-align:center;
-padding:20px;
-background:#000;
-}
-
+  /* ===== MOBILE ===== */
+  @media(max-width:600px){
+    nav .nav-links { display: none; }
+    .equip-grid { grid-template-columns: repeat(2, 1fr); }
+    .catalog-grid { grid-template-columns: 1fr; }
+  }
+  @media(max-width:400px){
+    .equip-grid { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
-
 <body>
 
-<header>
-<h1>🧪 Prince Raj Virtual Chemistry Lab</h1>
-<p>Contact: princeraj74682@gmail.com</p>
-</header>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">⚗️ PRINCE RAJ</div>
+  <ul class="nav-links">
+    <li><a href="#equipment">Equipment</a></li>
+    <li><a href="#reactions">Virtual Lab</a></li>
+    <li><a href="#periodic">Elements</a></li>
+    <li><a href="#catalog">Reactions</a></li>
+    <li><a href="#phcalc">pH Calc</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-<div class="lab">
-
-<div class="beaker">
-
-<div class="liquid"></div>
-
-<div class="bubble b1"></div>
-<div class="bubble b2"></div>
-<div class="bubble b3"></div>
-
-<div class="label">Prince Raj</div>
-
-</div>
-
-<div class="flask">
-
-<div class="flask-shape">
-<div class="flask-liquid"></div>
-</div>
-
-<div class="label">Prince Raj</div>
-
-</div>
-
-<div class="table"></div>
-
-</div>
-
-<section class="chemicals">
-
-<h2>Available Chemicals</h2>
-
-<div class="grid">
-
-<div class="card">H₂SO₄<br>Sulfuric Acid</div>
-<div class="card">HCl<br>Hydrochloric Acid</div>
-<div class="card">NaOH<br>Sodium Hydroxide</div>
-<div class="card">KOH<br>Potassium Hydroxide</div>
-<div class="card">NH₃<br>Ammonia</div>
-<div class="card">CuSO₄<br>Copper Sulfate</div>
-<div class="card">AgNO₃<br>Silver Nitrate</div>
-<div class="card">NaCl<br>Sodium Chloride</div>
-
-</div>
-
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="floating-atoms" id="atomsContainer"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚗ Virtual Chemistry Lab</div>
+    <h1>
+      <span class="line1">PRINCE RAJ</span>
+      <span class="line2">CHEMISTRY LABORATORY</span>
+    </h1>
+    <p class="hero-sub">Chemistry ka duniya explore karo! Virtual reactions, periodic table, pH calculator, quizzes aur bahut kuch — sabkuch ek jagah par.</p>
+    <div class="hero-btns">
+      <a href="#reactions" class="btn-primary">🧪 Virtual Lab Shuru Karo</a>
+      <a href="#catalog" class="btn-ghost">📖 Reactions Dekho</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">↓</div>
 </section>
 
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">118</div><div class="stat-lbl">ELEMENTS</div></div>
+  <div class="stat-item"><div class="stat-num">50+</div><div class="stat-lbl">REACTIONS</div></div>
+  <div class="stat-item"><div class="stat-num">20+</div><div class="stat-lbl">EQUIPMENT</div></div>
+  <div class="stat-item"><div class="stat-num">∞</div><div class="stat-lbl">KNOWLEDGE</div></div>
+</div>
+<div class="glow-divider"></div>
+
+<!-- EQUIPMENT SECTION -->
+<section id="equipment">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--acid-green),var(--electric-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🔬 Lab Equipment</div>
+    <p class="section-sub">Chemistry lab ke sabhi zaroori upkaran — har cheez par likha hai PRINCE RAJ</p>
+    <div class="equip-grid" id="equipGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- VIRTUAL REACTION LAB -->
+<section id="reactions">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--fire-orange),var(--danger-red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">⚗️ Virtual Reaction Lab</div>
+    <p class="section-sub">Do chemicals choose karo aur dekho kya hoga! Beaker aur glass par Prince Raj ka naam hai</p>
+    <div class="lab-wrapper">
+      <!-- Panel 1 -->
+      <div class="reaction-panel">
+        <div class="panel-title">⚗ CHEMICAL CHOOSER</div>
+        <label style="font-size:0.85rem;color:var(--text-sub);letter-spacing:1px;display:block;margin-bottom:5px;">CHEMICAL A</label>
+        <select class="chem-select" id="chemA">
+          <option value="hcl">HCl — Hydrochloric Acid (Tezaab)</option>
+          <option value="h2so4">H₂SO₄ — Sulphuric Acid</option>
+          <option value="naoh">NaOH — Sodium Hydroxide (Kaar)</option>
+          <option value="h2o">H₂O — Water (Paani)</option>
+          <option value="na">Na — Sodium Metal</option>
+          <option value="caco3">CaCO₃ — Calcium Carbonate</option>
+          <option value="mg">Mg — Magnesium</option>
+          <option value="fe">Fe — Iron</option>
+          <option value="zn">Zn — Zinc</option>
+          <option value="cu">Cu — Copper</option>
+          <option value="nh3">NH₃ — Ammonia</option>
+          <option value="hno3">HNO₃ — Nitric Acid</option>
+        </select>
+        <label style="font-size:0.85rem;color:var(--text-sub);letter-spacing:1px;display:block;margin-bottom:5px;">CHEMICAL B</label>
+        <select class="chem-select" id="chemB">
+          <option value="naoh">NaOH — Sodium Hydroxide</option>
+          <option value="hcl">HCl — Hydrochloric Acid</option>
+          <option value="h2o">H₂O — Water</option>
+          <option value="h2so4">H₂SO₄ — Sulphuric Acid</option>
+          <option value="na">Na — Sodium Metal</option>
+          <option value="caco3">CaCO₃ — Calcium Carbonate</option>
+          <option value="mg">Mg — Magnesium</option>
+          <option value="fe">Fe — Iron</option>
+          <option value="zn">Zn — Zinc</option>
+          <option value="cu">Cu — Copper</option>
+          <option value="agno3">AgNO₃ — Silver Nitrate</option>
+          <option value="nacl">NaCl — Common Salt</option>
+        </select>
+        <button class="react-btn" onclick="doReaction()">🔥 REACT KARO!</button>
+        <div class="beaker-visual" id="beakerVisual">
+          <span>🧪</span>
+          <div class="beaker-watermark">PRINCE RAJ</div>
+        </div>
+      </div>
+      <!-- Panel 2 -->
+      <div class="reaction-panel">
+        <div class="panel-title">📋 REACTION RESULT</div>
+        <div class="reaction-result" id="reactionResult">
+          <span style="color:var(--text-sub);font-size:0.9rem;">← Chemicals choose karo aur REACT KARO button dabao!</span>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <div class="panel-title" style="color:var(--plasma-purple);">🧫 OBSERVATION</div>
+          <div class="reaction-result" id="observationResult">
+            <span style="color:var(--text-sub);font-size:0.9rem;">Yahan reaction ka observation dikhega...</span>
+          </div>
+        </div>
+        <div style="margin-top:1.5rem;">
+          <div class="panel-title" style="color:var(--fire-orange);">📌 DID YOU KNOW?</div>
+          <div class="reaction-result" id="didYouKnow">
+            <span style="color:var(--text-sub);font-size:0.9rem;">Interesting facts yahan milenge...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- PERIODIC TABLE ELEMENT SEARCH -->
+<section id="periodic">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--electric-blue),var(--plasma-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">⚛️ Element Search</div>
+    <p class="section-sub">Koi bhi element ka naam ya symbol enter karo — poori jankari milegi</p>
+    <div class="element-search-box">
+      <input type="text" class="elem-input" id="elemInput" placeholder="e.g. Gold, Fe, Carbon, Na..." onkeypress="if(event.key==='Enter')searchElement()">
+      <button class="elem-search-btn" onclick="searchElement()">🔍 SEARCH</button>
+    </div>
+    <div class="element-display" id="elemDisplay">
+      <div class="element-tile">
+        <div class="at-num">79</div>
+        <div class="sym">Au</div>
+        <div class="ename">Gold</div>
+        <div class="ewt">196.97 u</div>
+        <div class="tile-watermark">PRINCE RAJ</div>
+      </div>
+      <div class="elem-info">
+        <h3>GOLD — AU</h3>
+        <table>
+          <tr><td>Atomic Number</td><td>79</td></tr>
+          <tr><td>Atomic Mass</td><td>196.97 u</td></tr>
+          <tr><td>Category</td><td>Transition Metal</td></tr>
+          <tr><td>Period</td><td>6</td></tr>
+          <tr><td>State (Room Temp)</td><td>Solid</td></tr>
+          <tr><td>Melting Point</td><td>1064°C</td></tr>
+          <tr><td>Boiling Point</td><td>2856°C</td></tr>
+          <tr><td>Electron Config</td><td>[Xe] 4f¹⁴ 5d¹⁰ 6s¹</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- REACTIONS CATALOG -->
+<section id="catalog">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--plasma-purple),var(--fire-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📚 Reactions Catalog</div>
+    <p class="section-sub">Chemistry ke important reactions — formulas aur explanations ke saath</p>
+    <div class="catalog-grid" id="catalogGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- SAFETY RULES -->
+<section id="safety">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--danger-red),var(--fire-orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">⚠️ Lab Safety Rules</div>
+    <p class="section-sub">Lab mein kaam karte waqt yeh zaroori niyam yaad rakhna</p>
+    <div class="safety-grid" id="safetyGrid"></div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- PH CALCULATOR + MOLAR MASS -->
+<section id="phcalc">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--acid-green),var(--plasma-purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🧮 Chemistry Calculators</div>
+    <p class="section-sub">pH aur Molar Mass calculate karo asaani se</p>
+    <div class="ph-grid">
+      <!-- pH Calculator -->
+      <div class="ph-panel">
+        <h3>⚗ pH CALCULATOR</h3>
+        <label style="font-size:0.85rem;color:var(--text-sub);display:block;margin-bottom:5px;letter-spacing:1px;">H⁺ CONCENTRATION (mol/L)</label>
+        <input type="number" class="ph-input" id="phConc" placeholder="e.g. 0.001" step="any" min="0">
+        <button class="ph-calc-btn" onclick="calcPH()">CALCULATE pH</button>
+        <div class="ph-result-box" id="phResultBox">
+          <div class="ph-value" id="phValueDisplay" style="color:var(--acid-green)">—</div>
+          <div class="ph-label" id="phTypeLabel">Enter concentration above</div>
+        </div>
+        <div class="ph-bar-section">
+          <div class="ph-bar-label">pH SCALE (0 → 14)</div>
+          <div class="ph-bar-track" id="phBarTrack">
+            <div class="ph-needle" id="phNeedle" style="left:50%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:0.75rem;color:var(--text-sub);">
+            <span>0 Acid</span><span>7 Neutral</span><span>14 Base</span>
+          </div>
+        </div>
+      </div>
+      <!-- Molar Mass -->
+      <div class="ph-panel">
+        <h3>⚗ MOLAR MASS CALCULATOR</h3>
+        <label style="font-size:0.85rem;color:var(--text-sub);display:block;margin-bottom:5px;letter-spacing:1px;">CHEMICAL FORMULA</label>
+        <div class="mol-input-row">
+          <input type="text" class="mol-input" id="molFormula" placeholder="e.g. H2O, NaCl, H2SO4" onkeypress="if(event.key==='Enter')calcMolar()">
+          <button class="mol-btn" onclick="calcMolar()">CALCULATE</button>
+        </div>
+        <div class="mol-result" id="molResult">
+          Formula enter karo aur calculate karo...
+        </div>
+        <div style="margin-top:1.5rem;">
+          <div class="ph-bar-label" style="margin-bottom:0.8rem;">QUICK FORMULAS</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0.5rem;" id="quickFormulas"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--electric-blue),var(--acid-green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">🎓 Chemistry Quiz</div>
+    <p class="section-sub">Apna chemistry knowledge test karo — Prince Raj ke saath!</p>
+    <div class="quiz-box" id="quizBox">
+      <div class="quiz-score" id="quizScore">Score: 0 / 0</div>
+      <div class="quiz-progress" id="quizProg">Question 1 / 10</div>
+      <div class="quiz-q" id="quizQ">Loading...</div>
+      <div class="quiz-options" id="quizOpts"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">NEXT QUESTION →</button>
+    </div>
+  </div>
+</section>
+
+<div class="glow-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-title" style="background:linear-gradient(90deg,var(--acid-green),var(--electric-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;">📬 Contact Prince Raj</div>
+    <p class="section-sub">Questions hai? Kuch seekhna hai? Sampark karo!</p>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-brand">PRINCE RAJ</div>
+        <p class="contact-tagline">Chemistry ke ek passionate teacher aur student jo virtual education ko aage le jaana chahte hain. Sabke liye free knowledge!</p>
+        <div class="contact-info">
+          <a href="mailto:princeraj74682@gmail.com" class="contact-item">
+            <span class="contact-item-icon">📧</span>
+            <div>
+              <div class="contact-item-label">EMAIL</div>
+              <div class="contact-item-val">princeraj74682@gmail.com</div>
+            </div>
+          </a>
+          <a href="https://wa.me/919263709817" class="contact-item" target="_blank">
+            <span class="contact-item-icon">💬</span>
+            <div>
+              <div class="contact-item-label">WHATSAPP</div>
+              <div class="contact-item-val">+91 9263709817</div>
+            </div>
+          </a>
+          <div class="contact-item">
+            <span class="contact-item-icon">🌐</span>
+            <div>
+              <div class="contact-item-label">WEBSITE</div>
+              <div class="contact-item-val">Prince Raj Chemistry Lab</div>
+            </div>
+          </div>
+          <div class="contact-item">
+            <span class="contact-item-icon">📍</span>
+            <div>
+              <div class="contact-item-label">MISSION</div>
+              <div class="contact-item-val">Free Chemistry Education for All</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <h3>📩 MESSAGE BHEJO</h3>
+        <input type="text" class="form-input" placeholder="Aapka Naam">
+        <input type="email" class="form-input" placeholder="Email Address">
+        <input type="text" class="form-input" placeholder="Subject / Vishay">
+        <textarea class="form-input" placeholder="Apna message yahan likhein..."></textarea>
+        <button class="form-btn" onclick="submitForm()">🚀 BHEJO</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
 <footer>
-© 2026 Prince Raj Virtual Chemistry Lab
+  <div class="footer-brand">⚗ PRINCE RAJ CHEMISTRY LAB ⚗</div>
+  <p>📧 princeraj74682@gmail.com &nbsp;|&nbsp; 💬 WhatsApp: +91 9263709817</p>
+  <p style="color:rgba(0,255,136,0.5);font-family:'Orbitron',sans-serif;font-size:0.7rem;letter-spacing:3px;margin-top:0.5rem;">PRINCE RAJ — CHEMISTRY FOR EVERYONE</p>
+  <p class="copy">© 2025 Prince Raj Chemistry Lab. Sabka swagat hai! 🧪</p>
 </footer>
 
+<script>
+// ===== FLOATING ATOMS =====
+const atomsC = document.getElementById('atomsContainer');
+const symbols = ['H','He','C','N','O','Na','Fe','Au','Ag','Cu','Zn','Mg','Ca','K','Al','Cl'];
+for(let i=0;i<30;i++){
+  const a = document.createElement('div');
+  a.className='atom';
+  const sz = Math.random()*30+10;
+  a.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;background:hsl(${Math.random()*360},80%,60%);animation-duration:${Math.random()*15+8}s;animation-delay:${Math.random()*10}s;display:flex;align-items:center;justify-content:center;font-size:${sz*0.4}px;color:rgba(255,255,255,0.7);font-family:Orbitron,sans-serif;font-weight:700;`;
+  a.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+  atomsC.appendChild(a);
+}
+
+// ===== EQUIPMENT DATA =====
+const equipment = [
+  {icon:'🧪',label:'GLASS',name:'Test Tube',desc:'Chhote chemical experiments ke liye kaam aata hai'},
+  {icon:'⚗️',label:'GLASS',name:'Beaker',desc:'Solutions prepare karne ke liye use hota hai'},
+  {icon:'🔬',label:'OPTICAL',name:'Microscope',desc:'Chheez wali cheezon ko bade karke dekhne ke liye'},
+  {icon:'🧫',label:'GLASS',name:'Petri Dish',desc:'Bacterial cultures aur reactions ke liye'},
+  {icon:'🌡️',label:'INSTRUMENT',name:'Thermometer',desc:'Temperature measure karne ke liye'},
+  {icon:'⚖️',label:'INSTRUMENT',name:'Weighing Balance',desc:'Mass accurately measure karne ke liye'},
+  {icon:'🏺',label:'GLASS',name:'Conical Flask',desc:'Titration aur mixing ke liye ideal'},
+  {icon:'💊',label:'GLASS',name:'Volumetric Flask',desc:'Accurate solutions banane ke liye'},
+  {icon:'🧲',label:'MAGNET',name:'Magnetic Stirrer',desc:'Solutions ko continuously mix karne ke liye'},
+  {icon:'🔥',label:'BURNER',name:'Bunsen Burner',desc:'Heating aur combustion reactions ke liye'},
+  {icon:'💉',label:'GLASS',name:'Burette',desc:'Titration mein precise volume ke liye'},
+  {icon:'🥄',label:'METAL',name:'Crucible',desc:'High temperature par substances heat karne ke liye'},
+  {icon:'🌀',label:'GLASS',name:'Round Bottom Flask',desc:'Distillation aur reflux ke liye'},
+  {icon:'🧊',label:'GLASS',name:'Condenser',desc:'Vapours ko liquid mein condense karne ke liye'},
+  {icon:'🔭',label:'OPTICAL',name:'Colorimeter',desc:'Solution ki concentration measure karna'},
+  {icon:'⚡',label:'ELECTRIC',name:'Electrolysis Setup',desc:'Electrolytic reactions ke liye'},
+  {icon:'🥢',label:'GLASS',name:'Glass Rod',desc:'Stirring aur mixing ke liye'},
+  {icon:'🎓',label:'GLASS',name:'Separating Funnel',desc:'Do immiscible liquids alag karne ke liye'},
+  {icon:'📐',label:'GLASS',name:'Measuring Cylinder',desc:'Volume accurately measure karne ke liye'},
+  {icon:'🌊',label:'GLASS',name:'Wash Bottle',desc:'Distilled water se wash karne ke liye'},
+];
+const equipGrid = document.getElementById('equipGrid');
+equipment.forEach(e=>{
+  equipGrid.innerHTML+=`<div class="equip-card">
+    <span class="equip-icon">${e.icon}</span>
+    <div class="equip-label">${e.label}</div>
+    <div class="equip-name">${e.name}</div>
+    <div class="equip-desc">${e.desc}</div>
+    <div class="prince-watermark">PRINCE RAJ</div>
+  </div>`;
+});
+
+// ===== VIRTUAL REACTIONS =====
+const reactionDB = {
+  'hcl+naoh': {
+    formula:'HCl + NaOH → NaCl + H₂O',
+    name:'Neutralization Reaction',
+    type:'neut',
+    obs:'Colorless solution banti hai. Exothermic hai — heat produce hoti hai. pH 7 ke paas aata hai.',
+    fact:'Yeh acid-base neutralization ka classic example hai. Sodium Chloride (common salt) banta hai!',
+    emoji:'💧',
+    glow:'rgba(0,255,136,0.3)'
+  },
+  'naoh+hcl': {
+    formula:'NaOH + HCl → NaCl + H₂O',
+    name:'Neutralization Reaction',
+    type:'neut',
+    obs:'Colorless solution banti hai. Exothermic reaction hai.',
+    fact:'NaOH ek strong base hai aur HCl ek strong acid — yeh milkar salt banate hain!',
+    emoji:'💧',
+    glow:'rgba(0,255,136,0.3)'
+  },
+  'h2so4+naoh': {
+    formula:'H₂SO₄ + 2NaOH → Na₂SO₄ + 2H₂O',
+    name:'Sulphate Neutralization',
+    type:'neut',
+    obs:'Highly exothermic! Sodium Sulphate (white solid) aur water banta hai.',
+    fact:'H₂SO₄ ek diprotic acid hai isliye 2 NaOH molecules chahiye!',
+    emoji:'⚡',
+    glow:'rgba(255,107,0,0.3)'
+  },
+  'na+h2o': {
+    formula:'2Na + 2H₂O → 2NaOH + H₂↑',
+    name:'Sodium + Water Reaction',
+    type:'redox',
+    obs:'Sodium paani mein tezi se react karta hai! H₂ gas nikalta hai, jo kabhi kabhi aag pakad leta hai! Sodium dhire dhire ghulta deta hai.',
+    fact:'Yeh bahut dangerous reaction hai! Sodium metal ko hamesha paani se door rakhna chahiye!',
+    emoji:'💥',
+    glow:'rgba(255,34,68,0.4)'
+  },
+  'h2o+na': {
+    formula:'2H₂O + 2Na → 2NaOH + H₂↑',
+    name:'Water + Sodium Reaction',
+    type:'redox',
+    obs:'Tezi se bubbles nikalte hain! Hydrogen gas aur sodium hydroxide banta hai.',
+    fact:'Alkali metals paani ke saath violently react karte hain!',
+    emoji:'💥',
+    glow:'rgba(255,34,68,0.4)'
+  },
+  'hcl+caco3': {
+    formula:'2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂↑',
+    name:'Acid + Carbonate Reaction',
+    type:'acid',
+    obs:'CO₂ gas ke bubbles tezi se nikalte hain! Fiz fiz ki awaaz aati hai. Calcium Chloride banata hai.',
+    fact:'Marble aur limestone mostly CaCO₃ se bane hain isliye acid rain se damage hote hain!',
+    emoji:'🫧',
+    glow:'rgba(0,200,255,0.3)'
+  },
+  'caco3+hcl': {
+    formula:'CaCO₃ + 2HCl → CaCl₂ + H₂O + CO₂↑',
+    name:'Carbonate + Acid Reaction',
+    type:'acid',
+    obs:'Effervescence! CO₂ gas nikalti hai. White precipitate dissolve ho jata hai.',
+    fact:'Yeh reaction limestone caves aur acid rain ke effects samjhane ke liye use hoti hai!',
+    emoji:'🫧',
+    glow:'rgba(0,200,255,0.3)'
+  },
+  'mg+hcl': {
+    formula:'Mg + 2HCl → MgCl₂ + H₂↑',
+    name:'Metal + Acid Reaction',
+    type:'acid',
+    obs:'Magnesium tezi se dissolve hoti hai! H₂ gas ke bubbles nikalte hain. Solution colorless rehta hai.',
+    fact:'Magnesium reactivity series mein kaafi upar hai isliye yeh HCl ke saath tezi se react karta hai!',
+    emoji:'⚡',
+    glow:'rgba(255,107,0,0.3)'
+  },
+  'hcl+mg': {
+    formula:'2HCl + Mg → MgCl₂ + H₂↑',
+    name:'Acid + Magnesium',
+    type:'acid',
+    obs:'Vigorous bubbling! Hydrogen gas banta hai aur magnesium ghul jata hai.',
+    fact:'H₂ gas ek non-toxic fuel hai jo future mein energy source ban sakta hai!',
+    emoji:'⚡',
+    glow:'rgba(255,107,0,0.3)'
+  },
+  'fe+h2so4': {
+    formula:'Fe + H₂SO₄ → FeSO₄ + H₂↑',
+    name:'Iron + Sulphuric Acid',
+    type:'acid',
+    obs:'Iron dhire dhire dissolve hota hai. Solution light green ho jata hai (FeSO₄). H₂ gas banta hai.',
+    fact:'FeSO₄ (Ferrous Sulphate) ek important industrial chemical hai!',
+    emoji:'🟢',
+    glow:'rgba(0,255,136,0.2)'
+  },
+  'zn+hcl': {
+    formula:'Zn + 2HCl → ZnCl₂ + H₂↑',
+    name:'Zinc + Hydrochloric Acid',
+    type:'acid',
+    obs:'Zinc dissolve hota hai, H₂ gas ke bubbles bante hain. Solution colorless hota hai.',
+    fact:'Zinc ka use galvanization mein hota hai — iron ko rust se bachane ke liye!',
+    emoji:'🫧',
+    glow:'rgba(0,200,255,0.25)'
+  },
+  'cu+hno3': {
+    formula:'3Cu + 8HNO₃(dilute) → 3Cu(NO₃)₂ + 2NO↑ + 4H₂O',
+    name:'Copper + Nitric Acid',
+    type:'redox',
+    obs:'Solution neela ho jata hai (Cu²⁺)! NO gas nikalta hai (colorless). Yeh NO air mein NO₂ (brown) ban jata hai.',
+    fact:'Copper hydrogen se niche hai reactivity mein, isliye HCl ya H₂SO₄ se react nahi karta — sirf HNO₃ se karta hai!',
+    emoji:'🔵',
+    glow:'rgba(0,100,255,0.3)'
+  },
+  'nh3+hcl': {
+    formula:'NH₃ + HCl → NH₄Cl',
+    name:'Ammonia + HCl Reaction',
+    type:'neut',
+    obs:'White smoke banta hai! NH₄Cl (ammonium chloride) white powder ke roop mein form hota hai.',
+    fact:'Yeh reaction smell test hai! Ammonia ki tez smell aati hai. Ammonium chloride fertilizer banane mein use hota hai!',
+    emoji:'🌫️',
+    glow:'rgba(255,255,255,0.2)'
+  },
+};
+function getKey(a,b){ return a+'+'+b; }
+function doReaction(){
+  const a = document.getElementById('chemA').value;
+  const b = document.getElementById('chemB').value;
+  const key = getKey(a,b);
+  const rev = getKey(b,a);
+  const r = reactionDB[key] || reactionDB[rev];
+  const bv = document.getElementById('beakerVisual');
+  const rr = document.getElementById('reactionResult');
+  const ob = document.getElementById('observationResult');
+  const dy = document.getElementById('didYouKnow');
+  // Add bubbles
+  for(let i=0;i<8;i++){
+    const bubble=document.createElement('div');
+    bubble.className='bubble';
+    const sz=Math.random()*15+5;
+    bubble.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*80+10}%;bottom:${Math.random()*20}px;animation-delay:${Math.random()*0.8}s;`;
+    bv.appendChild(bubble);
+    setTimeout(()=>bubble.remove(),2000);
+  }
+  if(r){
+    bv.style.boxShadow=`0 0 40px ${r.glow} inset`;
+    bv.style.borderColor='var(--acid-green)';
+    bv.querySelector('span').textContent=r.emoji;
+    setTimeout(()=>{bv.style.boxShadow='';bv.style.borderColor='';},3000);
+    const typeColor={'neut':'result-type-neut','acid':'result-type-acid','redox':'result-type-acid'}[r.type]||'';
+    rr.innerHTML=`<span class="formula">${r.formula}</span><br><br>Reaction: <span class="result-name">${r.name}</span>`;
+    ob.innerHTML=`👁️ ${r.obs}`;
+    dy.innerHTML=`💡 ${r.fact}`;
+  } else {
+    bv.querySelector('span').textContent='🤔';
+    rr.innerHTML=`<span style="color:var(--fire-orange)">Yeh combination known reaction mein nahi hai ya reaction nahi hota. Doosra combination try karo!</span>`;
+    ob.innerHTML=`<span style="color:var(--text-sub)">No significant observable reaction.</span>`;
+    dy.innerHTML=`<span style="color:var(--text-sub)">Sabhi chemicals aapas mein react nahi karte!</span>`;
+  }
+}
+
+// ===== ELEMENT DATABASE =====
+const elements = {
+  'h':  {num:1,sym:'H',name:'Hydrogen',mass:'1.008',cat:'Nonmetal',period:1,state:'Gas',mp:'-259°C',bp:'-253°C',conf:'1s¹'},
+  'he': {num:2,sym:'He',name:'Helium',mass:'4.003',cat:'Noble Gas',period:1,state:'Gas',mp:'-272°C',bp:'-269°C',conf:'1s²'},
+  'li': {num:3,sym:'Li',name:'Lithium',mass:'6.941',cat:'Alkali Metal',period:2,state:'Solid',mp:'180°C',bp:'1342°C',conf:'[He] 2s¹'},
+  'be': {num:4,sym:'Be',name:'Beryllium',mass:'9.012',cat:'Alkaline Earth Metal',period:2,state:'Solid',mp:'1287°C',bp:'2469°C',conf:'[He] 2s²'},
+  'b':  {num:5,sym:'B',name:'Boron',mass:'10.81',cat:'Metalloid',period:2,state:'Solid',mp:'2077°C',bp:'4000°C',conf:'[He] 2s² 2p¹'},
+  'c':  {num:6,sym:'C',name:'Carbon',mass:'12.011',cat:'Nonmetal',period:2,state:'Solid',mp:'3550°C',bp:'4827°C',conf:'[He] 2s² 2p²'},
+  'n':  {num:7,sym:'N',name:'Nitrogen',mass:'14.007',cat:'Nonmetal',period:2,state:'Gas',mp:'-210°C',bp:'-196°C',conf:'[He] 2s² 2p³'},
+  'o':  {num:8,sym:'O',name:'Oxygen',mass:'15.999',cat:'Nonmetal',period:2,state:'Gas',mp:'-218°C',bp:'-183°C',conf:'[He] 2s² 2p⁴'},
+  'f':  {num:9,sym:'F',name:'Fluorine',mass:'18.998',cat:'Halogen',period:2,state:'Gas',mp:'-220°C',bp:'-188°C',conf:'[He] 2s² 2p⁵'},
+  'ne': {num:10,sym:'Ne',name:'Neon',mass:'20.18',cat:'Noble Gas',period:2,state:'Gas',mp:'-249°C',bp:'-246°C',conf:'[He] 2s² 2p⁶'},
+  'na': {num:11,sym:'Na',name:'Sodium',mass:'22.99',cat:'Alkali Metal',period:3,state:'Solid',mp:'98°C',bp:'883°C',conf:'[Ne] 3s¹'},
+  'mg': {num:12,sym:'Mg',name:'Magnesium',mass:'24.305',cat:'Alkaline Earth Metal',period:3,state:'Solid',mp:'650°C',bp:'1090°C',conf:'[Ne] 3s²'},
+  'al': {num:13,sym:'Al',name:'Aluminium',mass:'26.982',cat:'Post-transition Metal',period:3,state:'Solid',mp:'660°C',bp:'2519°C',conf:'[Ne] 3s² 3p¹'},
+  'si': {num:14,sym:'Si',name:'Silicon',mass:'28.086',cat:'Metalloid',period:3,state:'Solid',mp:'1414°C',bp:'3265°C',conf:'[Ne] 3s² 3p²'},
+  'p':  {num:15,sym:'P',name:'Phosphorus',mass:'30.974',cat:'Nonmetal',period:3,state:'Solid',mp:'44°C',bp:'280°C',conf:'[Ne] 3s² 3p³'},
+  's':  {num:16,sym:'S',name:'Sulphur',mass:'32.065',cat:'Nonmetal',period:3,state:'Solid',mp:'115°C',bp:'445°C',conf:'[Ne] 3s² 3p⁴'},
+  'cl': {num:17,sym:'Cl',name:'Chlorine',mass:'35.453',cat:'Halogen',period:3,state:'Gas',mp:'-101°C',bp:'-34°C',conf:'[Ne] 3s² 3p⁵'},
+  'ar': {num:18,sym:'Ar',name:'Argon',mass:'39.948',cat:'Noble Gas',period:3,state:'Gas',mp:'-189°C',bp:'-186°C',conf:'[Ne] 3s² 3p⁶'},
+  'k':  {num:19,sym:'K',name:'Potassium',mass:'39.098',cat:'Alkali Metal',period:4,state:'Solid',mp:'63°C',bp:'759°C',conf:'[Ar] 4s¹'},
+  'ca': {num:20,sym:'Ca',name:'Calcium',mass:'40.078',cat:'Alkaline Earth Metal',period:4,state:'Solid',mp:'842°C',bp:'1484°C',conf:'[Ar] 4s²'},
+  'fe': {num:26,sym:'Fe',name:'Iron',mass:'55.845',cat:'Transition Metal',period:4,state:'Solid',mp:'1538°C',bp:'2862°C',conf:'[Ar] 3d⁶ 4s²'},
+  'cu': {num:29,sym:'Cu',name:'Copper',mass:'63.546',cat:'Transition Metal',period:4,state:'Solid',mp:'1085°C',bp:'2562°C',conf:'[Ar] 3d¹⁰ 4s¹'},
+  'zn': {num:30,sym:'Zn',name:'Zinc',mass:'65.38',cat:'Transition Metal',period:4,state:'Solid',mp:'420°C',bp:'907°C',conf:'[Ar] 3d¹⁰ 4s²'},
+  'br': {num:35,sym:'Br',name:'Bromine',mass:'79.904',cat:'Halogen',period:4,state:'Liquid',mp:'-7°C',bp:'59°C',conf:'[Ar] 3d¹⁰ 4s² 4p⁵'},
+  'ag': {num:47,sym:'Ag',name:'Silver',mass:'107.87',cat:'Transition Metal',period:5,state:'Solid',mp:'962°C',bp:'2162°C',conf:'[Kr] 4d¹⁰ 5s¹'},
+  'sn': {num:50,sym:'Sn',name:'Tin',mass:'118.71',cat:'Post-transition Metal',period:5,state:'Solid',mp:'232°C',bp:'2602°C',conf:'[Kr] 4d¹⁰ 5s² 5p²'},
+  'i':  {num:53,sym:'I',name:'Iodine',mass:'126.90',cat:'Halogen',period:5,state:'Solid',mp:'114°C',bp:'184°C',conf:'[Kr] 4d¹⁰ 5s² 5p⁵'},
+  'ba': {num:56,sym:'Ba',name:'Barium',mass:'137.33',cat:'Alkaline Earth Metal',period:6,state:'Solid',mp:'727°C',bp:'1870°C',conf:'[Xe] 6s²'},
+  'au': {num:79,sym:'Au',name:'Gold',mass:'196.97',cat:'Transition Metal',period:6,state:'Solid',mp:'1064°C',bp:'2856°C',conf:'[Xe] 4f¹⁴ 5d¹⁰ 6s¹'},
+  'hg': {num:80,sym:'Hg',name:'Mercury',mass:'200.59',cat:'Transition Metal',period:6,state:'Liquid',mp:'-39°C',bp:'357°C',conf:'[Xe] 4f¹⁴ 5d¹⁰ 6s²'},
+  'pb': {num:82,sym:'Pb',name:'Lead',mass:'207.2',cat:'Post-transition Metal',period:6,state:'Solid',mp:'327°C',bp:'1749°C',conf:'[Xe] 4f¹⁴ 5d¹⁰ 6s² 6p²'},
+  'u':  {num:92,sym:'U',name:'Uranium',mass:'238.03',cat:'Actinide',period:7,state:'Solid',mp:'1135°C',bp:'4131°C',conf:'[Rn] 5f³ 6d¹ 7s²'},
+};
+// Name-based aliases
+const nameMap={
+  'hydrogen':'h','helium':'he','lithium':'li','beryllium':'be','boron':'b','carbon':'c',
+  'nitrogen':'n','oxygen':'o','fluorine':'f','neon':'ne','sodium':'na','magnesium':'mg',
+  'aluminium':'al','aluminum':'al','silicon':'si','phosphorus':'p','sulphur':'s','sulfur':'s',
+  'chlorine':'cl','argon':'ar','potassium':'k','calcium':'ca','iron':'fe','copper':'cu',
+  'zinc':'zn','bromine':'br','silver':'ag','tin':'sn','iodine':'i','barium':'ba',
+  'gold':'au','mercury':'hg','lead':'pb','uranium':'u',
+};
+function searchElement(){
+  const q=document.getElementById('elemInput').value.trim().toLowerCase();
+  const key=elements[q]?q:(nameMap[q]||null);
+  const el=key?elements[key]:null;
+  if(!el){ document.getElementById('elemDisplay').querySelector('.elem-info h3').textContent='❌ Element nahi mila!';return; }
+  const gColors=['linear-gradient(135deg,#a855f7,#00c8ff)','linear-gradient(135deg,#ff2244,#ff6b00)','linear-gradient(135deg,#00ff88,#00a8ff)','linear-gradient(135deg,#ff6b00,#ffd700)'];
+  const gc=gColors[el.num%gColors.length];
+  const tile=document.getElementById('elemDisplay').querySelector('.element-tile');
+  tile.style.background=gc;
+  tile.querySelector('.at-num').textContent=el.num;
+  tile.querySelector('.sym').textContent=el.sym;
+  tile.querySelector('.ename').textContent=el.name;
+  tile.querySelector('.ewt').textContent=el.mass+' u';
+  const info=document.getElementById('elemDisplay').querySelector('.elem-info');
+  info.innerHTML=`<h3>${el.name.toUpperCase()} — ${el.sym}</h3>
+  <table>
+    <tr><td>Atomic Number</td><td>${el.num}</td></tr>
+    <tr><td>Atomic Mass</td><td>${el.mass} u</td></tr>
+    <tr><td>Category</td><td>${el.cat}</td></tr>
+    <tr><td>Period</td><td>${el.period}</td></tr>
+    <tr><td>State (Room Temp)</td><td>${el.state}</td></tr>
+    <tr><td>Melting Point</td><td>${el.mp}</td></tr>
+    <tr><td>Boiling Point</td><td>${el.bp}</td></tr>
+    <tr><td>Electron Config</td><td>${el.conf}</td></tr>
+  </table>`;
+}
+
+// ===== CATALOG DATA =====
+const catalog=[
+  {type:'neut',label:'Neutralization',name:'HCl + NaOH',formula:'HCl + NaOH → NaCl + H₂O',desc:'Acid aur base ka neutralization — table salt banta hai. Exothermic reaction.'},
+  {type:'acid',label:'Acid-Metal',name:'Mg + HCl',formula:'Mg + 2HCl → MgCl₂ + H₂↑',desc:'Magnesium acid mein ghul jaata hai aur hydrogen gas nikalta hai.'},
+  {type:'combo',label:'Combination',name:'H₂ + O₂',formula:'2H₂ + O₂ → 2H₂O',desc:'Hydrogen aur oxygen milkar paani banate hain — yeh rocket fuel bhi hai!'},
+  {type:'redox',label:'Redox',name:'Fe + CuSO₄',formula:'Fe + CuSO₄ → FeSO₄ + Cu',desc:'Displacement reaction: iron copper ko uski jagah se hata deta hai.'},
+  {type:'organic',label:'Organic',name:'CH₄ Combustion',formula:'CH₄ + 2O₂ → CO₂ + 2H₂O',desc:'Methane (cooking gas) ka combustion — ghar mein khana pakane ka chemistry!'},
+  {type:'neut',label:'Precipitation',name:'NaCl + AgNO₃',formula:'NaCl + AgNO₃ → AgCl↓ + NaNO₃',desc:'White precipitate of Silver Chloride banta hai — classic precipitation reaction!'},
+  {type:'acid',label:'Acid-Carbonate',name:'HCl + CaCO₃',formula:'2HCl + CaCO₃ → CaCl₂ + H₂O + CO₂↑',desc:'Marble chips acid mein dissolve hote hain aur CO₂ gas nikalti hai.'},
+  {type:'combo',label:'Synthesis',name:'N₂ + H₂ (Haber)',formula:'N₂ + 3H₂ ⇌ 2NH₃',desc:'Haber process: ammonia banane ki industrial process — fertilizers ke liye!'},
+  {type:'redox',label:'Decomposition',name:'H₂O₂ Decomp',formula:'2H₂O₂ → 2H₂O + O₂↑',desc:'Hydrogen peroxide water aur oxygen mein toot jaata hai. MnO₂ catalyst ka use hota hai.'},
+  {type:'organic',label:'Esterification',name:'Ethanol + Acetic Acid',formula:'C₂H₅OH + CH₃COOH → CH₃COOC₂H₅ + H₂O',desc:'Ester banata hai jo fruits jesi sweet smell deta hai!'},
+  {type:'acid',label:'Acid-Base',name:'NH₃ + HCl',formula:'NH₃ + HCl → NH₄Cl',desc:'White smoke banta hai! Ammonium chloride ki formation.'},
+  {type:'redox',label:'Redox',name:'Na + H₂O',formula:'2Na + 2H₂O → 2NaOH + H₂↑',desc:'Sodium paani ke saath violently react karta hai aur fire lag sakta hai!'},
+];
+const catalogGrid=document.getElementById('catalogGrid');
+catalog.forEach(c=>{
+  catalogGrid.innerHTML+=`<div class="catalog-card">
+    <span class="cat-type ${c.type}">${c.label}</span>
+    <h3>${c.name}</h3>
+    <div class="cat-formula">${c.formula}</div>
+    <div class="cat-desc">${c.desc}</div>
+  </div>`;
+});
+
+// ===== SAFETY DATA =====
+const safety=[
+  {icon:'🥽',title:'EYE PROTECTION',text:'Hamesha safety goggles pehno. Chemicals aankhon mein gir sakte hain aur blindness ho sakti hai!'},
+  {icon:'🧤',title:'HAND PROTECTION',text:'Chemical resistant gloves use karo — acid aur bases skin ko jalate hain.'},
+  {icon:'🧥',title:'LAB COAT',text:'White lab coat pehno — kapdon ko chemicals se bachata hai aur professional look deta hai.'},
+  {icon:'🚫',title:'KHANA/PEENA NAHI',text:'Lab mein khana ya peena bilkul mana hai. Chemicals khane mein ja sakte hain!'},
+  {icon:'🌊',title:'CHEMICALS WASH KARO',text:'Agar chemical skin pe lag jaye to turant bahut sara paani se 15 min tak dhoo.'},
+  {icon:'🔥',title:'FIRE SAFETY',text:'Bunsen burner ke paas flammable materials mat rakhna. Fire extinguisher ka location jaano.'},
+  {icon:'🏷️',title:'LABELS PADHO',text:'Koi bhi chemical use karne se pehle uski label zaroor padho — concentration aur hazard check karo.'},
+  {icon:'🧹',title:'SAFAI KARO',text:'Experiment ke baad apna workspace clean karo. Spills turant saaf karo.'},
+  {icon:'📵',title:'MOBILE NAHI',text:'Experiment ke dauran mobile phone use nahi karna — distraction se accidents hote hain!'},
+  {icon:'🚪',title:'EMERGENCY EXIT',text:'Emergency exit ka location jaano. Panic nahi karna, safely bahar nikalna.'},
+  {icon:'⚗️',title:'DILUTION RULES',text:'Acid mein paani nahi, paani mein acid dalo — "AAP" rule! (Acid Add in Paani)'},
+  {icon:'🧪',title:'SMELL TEST',text:'Chemicals ko directly nahi sunghna — hath se dhire dhire smell ki taraf fan karo.'},
+];
+const safetyGrid=document.getElementById('safetyGrid');
+safety.forEach(s=>{
+  safetyGrid.innerHTML+=`<div class="safety-card">
+    <div class="safety-icon">${s.icon}</div>
+    <h3>${s.title}</h3>
+    <p>${s.text}</p>
+    <div class="safety-watermark">PRINCE RAJ</div>
+  </div>`;
+});
+
+// ===== PH CALCULATOR =====
+function calcPH(){
+  const c=parseFloat(document.getElementById('phConc').value);
+  if(isNaN(c)||c<=0){alert('Valid concentration enter karo (positive number)!');return;}
+  const ph=-Math.log10(c);
+  const phClamp=Math.max(0,Math.min(14,ph));
+  const d=document.getElementById('phValueDisplay');
+  const l=document.getElementById('phTypeLabel');
+  d.textContent=phClamp.toFixed(2);
+  if(phClamp<7){d.style.color='var(--danger-red)';l.textContent='⚡ ACIDIC — pH < 7';}
+  else if(phClamp>7){d.style.color='var(--electric-blue)';l.textContent='💧 BASIC / ALKALINE — pH > 7';}
+  else{d.style.color='var(--acid-green)';l.textContent='⚗️ NEUTRAL — pH = 7';}
+  document.getElementById('phNeedle').style.left=(phClamp/14*100)+'%';
+}
+
+// ===== MOLAR MASS =====
+const atomicMasses={'H':1.008,'He':4.003,'Li':6.941,'Be':9.012,'B':10.811,'C':12.011,'N':14.007,'O':15.999,'F':18.998,'Ne':20.18,'Na':22.99,'Mg':24.305,'Al':26.982,'Si':28.086,'P':30.974,'S':32.065,'Cl':35.453,'Ar':39.948,'K':39.098,'Ca':40.078,'Cr':51.996,'Mn':54.938,'Fe':55.845,'Co':58.933,'Ni':58.693,'Cu':63.546,'Zn':65.38,'Br':79.904,'Ag':107.87,'Sn':118.71,'I':126.90,'Ba':137.33,'Au':196.97,'Hg':200.59,'Pb':207.2};
+function calcMolar(){
+  const f=document.getElementById('molFormula').value.trim();
+  if(!f){document.getElementById('molResult').innerHTML='<span style="color:var(--danger-red)">Formula enter karo!</span>';return;}
+  const regex=/([A-Z][a-z]?)(\d*)/g;
+  let m,total=0,breakdown=[];
+  while((m=regex.exec(f))!==null){
+    if(!m[1])continue;
+    const el=m[1],cnt=parseInt(m[2]||'1');
+    const mass=atomicMasses[el];
+    if(!mass){document.getElementById('molResult').innerHTML=`<span style="color:var(--danger-red)">Unknown element: ${el}</span>`;return;}
+    total+=mass*cnt;
+    breakdown.push(`${el}×${cnt}: ${(mass*cnt).toFixed(3)} g/mol`);
+  }
+  if(total===0){document.getElementById('molResult').innerHTML='<span style="color:var(--danger-red)">Valid formula nahi hai!</span>';return;}
+  document.getElementById('molResult').innerHTML=`<div class="big">${total.toFixed(3)} g/mol</div><div style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-sub);">${breakdown.join(' &nbsp;|&nbsp; ')}</div>`;
+}
+const qf=['H2O','NaCl','H2SO4','CO2','NH3','C6H12O6','HCl','NaOH','CaCO3','CH4'];
+const qfC=document.getElementById('quickFormulas');
+qf.forEach(f=>{
+  const btn=document.createElement('button');
+  btn.style.cssText='padding:6px 12px;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);border-radius:6px;color:var(--plasma-purple);font-family:Exo 2,sans-serif;font-size:0.85rem;cursor:pointer;transition:all 0.2s;';
+  btn.textContent=f;
+  btn.onmouseover=()=>btn.style.background='rgba(168,85,247,0.2)';
+  btn.onmouseout=()=>btn.style.background='rgba(168,85,247,0.1)';
+  btn.onclick=()=>{document.getElementById('molFormula').value=f;calcMolar();};
+  qfC.appendChild(btn);
+});
+
+// ===== QUIZ =====
+const quizData=[
+  {q:'Paani ka chemical formula kya hai?',opts:['H₂O','CO₂','NaCl','HCl'],ans:0,exp:'Paani mein 2 Hydrogen aur 1 Oxygen atom hota hai!'},
+  {q:'Hydrochloric acid ka formula?',opts:['H₂SO₄','HCl','HNO₃','H₃PO₄'],ans:1,exp:'HCl — Hydrogen aur Chlorine — stomach acid bhi yehi hota hai!'},
+  {q:'Table salt ka chemical naam?',opts:['Sodium Nitrate','Potassium Chloride','Sodium Chloride','Calcium Carbonate'],ans:2,exp:'Table salt = NaCl = Sodium Chloride!'},
+  {q:'Sabse hafla (lightest) element kaun sa hai?',opts:['Helium','Carbon','Hydrogen','Lithium'],ans:2,exp:'Hydrogen — atomic number 1, sabse halka element!'},
+  {q:'CO₂ ka matlab kya hai?',opts:['Carbon Monoxide','Calcium Dioxide','Carbon Dioxide','Copper Oxide'],ans:2,exp:'CO₂ = Carbon Dioxide — hum saans lete waqt exhale karte hain!'},
+  {q:'Gold ka chemical symbol?',opts:['Go','Gd','Ag','Au'],ans:3,exp:'Au — Latin word "Aurum" se aaya hai!'},
+  {q:'Periodic table mein kitne elements hain?',opts:['92','100','118','108'],ans:2,exp:'118 elements hain periodic table mein — 2016 mein confirm hua!'},
+  {q:'Khane ka soda ka chemical naam?',opts:['Sodium Chloride','Sodium Bicarbonate','Sodium Sulphate','Sodium Nitrate'],ans:1,exp:'NaHCO₃ = Sodium Bicarbonate = Baking Soda!'},
+  {q:'Atoms ke centre ko kya kehte hain?',opts:['Electron','Proton','Nucleus','Neutron'],ans:2,exp:'Nucleus mein Protons aur Neutrons hote hain!'},
+  {q:'Oxygen ka atomic number?',opts:['6','7','8','9'],ans:2,exp:'Oxygen ka atomic number 8 hai — 8 protons hote hain!'},
+];
+let qIdx=0,score=0,answered=false;
+function loadQuestion(){
+  if(qIdx>=quizData.length){
+    document.getElementById('quizQ').textContent='Quiz khatam! 🎉';
+    document.getElementById('quizOpts').innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:1rem;background:rgba(0,255,136,0.1);border-radius:10px;color:var(--acid-green);font-family:Orbitron,sans-serif;font-size:1.2rem;">Final Score: ${score} / ${quizData.length}</div>`;
+    document.getElementById('quizFeedback').className='quiz-feedback';
+    document.getElementById('nextBtn').className='next-btn';
+    document.getElementById('quizProg').textContent='Quiz Complete! 🏆';
+    const restartBtn=document.createElement('button');
+    restartBtn.className='next-btn show';
+    restartBtn.textContent='RESTART QUIZ 🔄';
+    restartBtn.onclick=()=>{qIdx=0;score=0;answered=false;document.getElementById('quizOpts').innerHTML='';document.getElementById('quizBox').removeChild(restartBtn);loadQuestion();};
+    document.getElementById('quizBox').appendChild(restartBtn);
+    return;
+  }
+  const q=quizData[qIdx];
+  answered=false;
+  document.getElementById('quizProg').textContent=`Question ${qIdx+1} / ${quizData.length}`;
+  document.getElementById('quizScore').textContent=`Score: ${score} / ${qIdx}`;
+  document.getElementById('quizQ').textContent=q.q;
+  const optsDiv=document.getElementById('quizOpts');
+  optsDiv.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const btn=document.createElement('button');
+    btn.className='quiz-opt';
+    btn.textContent=o;
+    btn.onclick=()=>answerQ(i);
+    optsDiv.appendChild(btn);
+  });
+  document.getElementById('quizFeedback').className='quiz-feedback';
+  document.getElementById('nextBtn').className='next-btn';
+}
+function answerQ(idx){
+  if(answered)return;
+  answered=true;
+  const q=quizData[qIdx];
+  const opts=document.querySelectorAll('.quiz-opt');
+  const fb=document.getElementById('quizFeedback');
+  opts.forEach((o,i)=>{
+    if(i===q.ans)o.classList.add('correct');
+    else if(i===idx&&idx!==q.ans)o.classList.add('wrong');
+    o.style.pointerEvents='none';
+  });
+  if(idx===q.ans){
+    score++;
+    fb.className='quiz-feedback show correct-f';
+    fb.textContent='✅ Sahi jawab! '+q.exp;
+  } else {
+    fb.className='quiz-feedback show wrong-f';
+    fb.textContent='❌ Galat! Sahi jawab: '+q.opts[q.ans]+'. '+q.exp;
+  }
+  document.getElementById('quizScore').textContent=`Score: ${score} / ${qIdx+1}`;
+  document.getElementById('nextBtn').className='next-btn show';
+}
+function nextQuestion(){ qIdx++; loadQuestion(); }
+loadQuestion();
+
+// ===== FORM =====
+function submitForm(){
+  alert('✅ Message bhej diya gaya! Prince Raj aapko jald hi reply karenge.\n📧 princeraj74682@gmail.com\n💬 WhatsApp: +91 9263709817');
+}
+
+// ===== SCROLL ANIMATIONS =====
+const observer=new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}
+  });
+},{threshold:0.1});
+document.querySelectorAll('.equip-card,.catalog-card,.safety-card,.contact-item').forEach(el=>{
+  el.style.opacity='0';
+  el.style.transform='translateY(20px)';
+  el.style.transition='opacity 0.5s ease, transform 0.5s ease';
+  observer.observe(el);
+});
+</script>
 </body>
 </html>
